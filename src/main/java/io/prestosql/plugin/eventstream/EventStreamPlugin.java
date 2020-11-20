@@ -13,10 +13,9 @@
  */
 package io.prestosql.plugin.eventstream;
 
+import com.google.common.collect.ImmutableList;
 import io.prestosql.spi.Plugin;
 import io.prestosql.spi.eventlistener.EventListenerFactory;
-
-import static java.util.Collections.emptyList;
 
 public class EventStreamPlugin
         implements Plugin
@@ -24,6 +23,6 @@ public class EventStreamPlugin
     @Override
     public Iterable<EventListenerFactory> getEventListenerFactories()
     {
-        return emptyList();
+        return ImmutableList.of(new EventStreamEventListenerFactory());
     }
 }

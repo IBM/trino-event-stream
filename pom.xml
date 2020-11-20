@@ -13,6 +13,18 @@
 	<description>Presto - Stream events to Kafka</description>
 	<packaging>presto-plugin</packaging>
 
+	<licenses>
+		<license>
+			<name>Apache License 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<properties>
+		<kafka.version>2.5.0</kafka.version>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>io.airlift</groupId>
@@ -79,6 +91,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+			<version>${kafka.version}</version>
+		</dependency>
+
 		<!-- for testing -->
 		<dependency>
 			<groupId>io.prestosql</groupId>
@@ -101,12 +119,6 @@
 		<dependency>
 			<groupId>io.airlift</groupId>
 			<artifactId>testing</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
 			<scope>test</scope>
 		</dependency>
 

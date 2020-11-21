@@ -17,7 +17,6 @@ import com.google.common.collect.ImmutableMap;
 import io.prestosql.spi.eventlistener.EventListener;
 import io.prestosql.spi.eventlistener.EventListenerFactory;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.common.serialization.ByteArraySerializer;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -36,7 +35,7 @@ public class EventStreamEventListenerFactory
     @Override
     public EventListener create(Map<String, String> config)
     {
-        KafkaProducer<byte[], byte[]> kafkaProducer = createKafkaProducer(
+        KafkaProducer<String, Object> kafkaProducer = createKafkaProducer(
                 toKafkaConfig(config)
         );
 
@@ -62,11 +61,13 @@ public class EventStreamEventListenerFactory
             builder.put(kafkaConfigKey, config.get(key));
         }
 
+        // TODO design ways to config/code serializer
+
         return builder.build();
     }
 
-    private KafkaProducer<byte[], byte[]> createKafkaProducer(Map<String, Object> properties)
+    private KafkaProducer<String, Object> createKafkaProducer(Map<String, Object> properties)
     {
-        return new KafkaProducer<>(properties, new ByteArraySerializer(), new ByteArraySerializer());
+        return new KafkaProducer<>(properties);
     }
 }

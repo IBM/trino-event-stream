@@ -21,16 +21,16 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 /**
- * An EventListener wraps Kafka producer to send query events to Kaka
+ * An EventListener wraps Kafka producer to send query events to Kafka
  */
 public class EventStreamEventListener
         implements EventListener
 {
     private final KafkaProducer kafkaProducer;
-    // TODO make this topic configurable
+    // TODO make this topic name configurable
     private static final String TOPIC_PRESTO_EVENT = "presto.event";
 
-    public EventStreamEventListener(KafkaProducer<byte[], byte[]> kafkaProducer)
+    public EventStreamEventListener(KafkaProducer<String, Object> kafkaProducer)
     {
         this.kafkaProducer = kafkaProducer;
     }
@@ -38,24 +38,30 @@ public class EventStreamEventListener
     @Override
     public void queryCreated(QueryCreatedEvent queryCreatedEvent)
     {
-        producer.send(
-                new ProducerRecord<>(TOPIC_PRESTO_EVENT, queryCreatedEvent.getMetadata().getQueryId(), queryCreatedEvent)
+        kafkaProducer.send(
+                new ProducerRecord<>(TOPIC_PRESTO_EVENT,
+                        queryCreatedEvent.getMetadata().getQueryId(),
+                        queryCreatedEvent)
         );
     }
 
     @Override
     public void queryCompleted(QueryCompletedEvent queryCompletedEvent)
     {
-        producer.send(
-                new ProducerRecord<>(TOPIC_PRESTO_EVENT, queryCompletedEvent.getMetadata().getQueryId(), queryCompletedEvent)
+        kafkaProducer.send(
+                new ProducerRecord<>(TOPIC_PRESTO_EVENT,
+                        queryCompletedEvent.getMetadata().getQueryId(),
+                        queryCompletedEvent)
         );
     }
 
     @Override
     public void splitCompleted(SplitCompletedEvent splitCompletedEvent)
     {
-        producer.send(
-                new ProducerRecord<>(TOPIC_PRESTO_EVENT, splitCompletedEvent.getQueryId(), splitCompletedEvent)
+        kafkaProducer.send(
+                new ProducerRecord<>(TOPIC_PRESTO_EVENT,
+                        splitCompletedEvent.getQueryId(),
+                        splitCompletedEvent)
         );
     }
 }

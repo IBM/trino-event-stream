@@ -24,20 +24,19 @@ import java.util.Map;
 public class EventStreamEventListenerFactory
         implements EventListenerFactory
 {
-    private static final String REGEX_CONFIG_PREFIX = "^eventstream.";
+    private static final String REGEX_CONFIG_PREFIX = "^event-stream.";
 
     @Override
     public String getName()
     {
-        return "eventstream";
+        return "event-stream";
     }
 
     @Override
     public EventListener create(Map<String, String> config)
     {
-        KafkaProducer<String, Object> kafkaProducer = createKafkaProducer(
-                toKafkaConfig(config)
-        );
+        KafkaProducer<String, Object> kafkaProducer =
+                createKafkaProducer(toKafkaConfig(config));
 
         return new EventStreamEventListener(kafkaProducer);
     }
@@ -53,8 +52,7 @@ public class EventStreamEventListenerFactory
 
         Iterator<String> it = config.keySet().iterator();
 
-        while(it.hasNext())
-        {
+        while (it.hasNext()) {
             String key = it.next();
             String kafkaConfigKey = key.replaceFirst(REGEX_CONFIG_PREFIX,
                     "");

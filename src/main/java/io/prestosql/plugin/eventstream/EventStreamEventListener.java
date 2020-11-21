@@ -41,8 +41,7 @@ public class EventStreamEventListener
         kafkaProducer.send(
                 new ProducerRecord<>(TOPIC_PRESTO_EVENT,
                         queryCreatedEvent.getMetadata().getQueryId(),
-                        queryCreatedEvent)
-        );
+                        queryCreatedEvent));
     }
 
     @Override
@@ -51,8 +50,7 @@ public class EventStreamEventListener
         kafkaProducer.send(
                 new ProducerRecord<>(TOPIC_PRESTO_EVENT,
                         queryCompletedEvent.getMetadata().getQueryId(),
-                        queryCompletedEvent)
-        );
+                        queryCompletedEvent));
     }
 
     @Override
@@ -61,7 +59,6 @@ public class EventStreamEventListener
         kafkaProducer.send(
                 new ProducerRecord<>(TOPIC_PRESTO_EVENT,
                         splitCompletedEvent.getQueryId(),
-                        splitCompletedEvent)
-        );
+                        splitCompletedEvent));
     }
 }

@@ -11,9 +11,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.prestosql.plugin.eventstream;
+package io.trino.plugin.eventstream;
 
-import io.prestosql.spi.eventlistener.EventListenerFactory;
+import io.trino.spi.eventlistener.EventListenerFactory;
 import org.testng.annotations.Test;
 
 import static com.google.common.collect.Iterables.getOnlyElement;

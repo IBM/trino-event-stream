@@ -1,5 +1,5 @@
-# PrestoSQL event stream
+# Trino event stream
 
-A PrestoSQL plugin to stream presto events into Kafka.
+A Trino plugin to stream presto events into Kafka topic.
 
-It implements `EventListener` interface.
+It implements the [`io.trino.spi.eventlistern.EventListener`](https://github.com/trinodb/trino/blob/f6422d04663ab011d3ddb831ed16dec02659c47e/core/trino-spi/src/main/java/io/trino/spi/eventlistener/EventListener.java) interface.

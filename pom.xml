@@ -4,14 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>io.prestosql</groupId>
-		<artifactId>presto-root</artifactId>
-		<version>346</version>
+		<groupId>io.trino</groupId>
+		<artifactId>trino-root</artifactId>
+		<version>351</version>
 	</parent>
 
-	<artifactId>presto-event-stream</artifactId>
-	<description>Presto - Stream events to Kafka</description>
-	<packaging>presto-plugin</packaging>
+	<artifactId>trino-event-stream</artifactId>
+	<description>Trino - Stream events to Kafka</description>
+	<packaging>trino-plugin</packaging>
 
 	<licenses>
 		<license>
@@ -72,10 +72,10 @@
 			<version>${kafka.version}</version>
 		</dependency>
 
-		<!-- Presto SPI -->
+		<!-- trino SPI -->
 		<dependency>
-			<groupId>io.prestosql</groupId>
-			<artifactId>presto-spi</artifactId>
+			<groupId>io.trino</groupId>
+			<artifactId>trino-spi</artifactId>
 			<scope>provided</scope>
 		</dependency>
 
@@ -99,8 +99,8 @@
 
 		<!-- for testing -->
 		<dependency>
-			<groupId>io.prestosql</groupId>
-			<artifactId>presto-main</artifactId>
+			<groupId>io.trino</groupId>
+			<artifactId>trino-main</artifactId>
 			<scope>test</scope>
 		</dependency>
 

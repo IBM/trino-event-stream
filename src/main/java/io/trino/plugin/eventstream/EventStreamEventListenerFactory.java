@@ -11,11 +11,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.prestosql.plugin.eventstream;
+package io.trino.plugin.eventstream;
 
 import com.google.common.collect.ImmutableMap;
-import io.prestosql.spi.eventlistener.EventListener;
-import io.prestosql.spi.eventlistener.EventListenerFactory;
+import io.trino.spi.eventlistener.EventListener;
+import io.trino.spi.eventlistener.EventListenerFactory;
 import org.apache.kafka.clients.producer.KafkaProducer;
 
 import java.util.Iterator;

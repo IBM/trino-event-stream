@@ -28,7 +28,7 @@ public class EventStreamEventListener
 {
     private final KafkaProducer kafkaProducer;
     // TODO make this topic name configurable
-    private static final String TOPIC_PRESTO_EVENT = "presto.event";
+    private static final String TOPIC_PRESTO_EVENT = "trino.event";
 
     public EventStreamEventListener(KafkaProducer<String, Object> kafkaProducer)
     {

@@ -22,10 +22,15 @@
 	</licenses>
 
 	<properties>
-		<kafka.version>2.5.0</kafka.version>
+		<kafka.version>2.5.1</kafka.version>
 	</properties>
 	
 	<dependencies>
+		<dependency>
+			<groupId>io.airlift</groupId>
+			<artifactId>log</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>

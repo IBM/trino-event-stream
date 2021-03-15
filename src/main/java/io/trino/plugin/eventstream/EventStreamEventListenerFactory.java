@@ -14,6 +14,7 @@
 package io.trino.plugin.eventstream;
 
 import com.google.common.collect.ImmutableMap;
+import io.airlift.log.Logger;
 import io.trino.spi.eventlistener.EventListener;
 import io.trino.spi.eventlistener.EventListenerFactory;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -24,7 +25,8 @@ import java.util.Map;
 public class EventStreamEventListenerFactory
         implements EventListenerFactory
 {
-    private static final String REGEX_CONFIG_PREFIX = "^event-stream.";
+    private static final Logger log = Logger.get(EventStreamEventListenerFactory.class);
+    // private static final String REGEX_CONFIG_PREFIX = "^event-stream.";
 
     @Override
     public String getName()
@@ -54,9 +56,10 @@ public class EventStreamEventListenerFactory
 
         while (it.hasNext()) {
             String key = it.next();
-            String kafkaConfigKey = key.replaceFirst(REGEX_CONFIG_PREFIX,
-                    "");
-            builder.put(kafkaConfigKey, config.get(key));
+            // String kafkaConfigKey = key.replaceFirst(REGEX_CONFIG_PREFIX,
+            //         "");
+            log.debug("Loading event-listener config %s", key);
+            builder.put(key, config.get(key));
         }
 
         // TODO design ways to config/code serializer

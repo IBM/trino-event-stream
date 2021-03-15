@@ -13,6 +13,7 @@
  */
 package io.trino.plugin.eventstream;
 
+import io.airlift.log.Logger;
 import io.trino.spi.eventlistener.EventListener;
 import io.trino.spi.eventlistener.QueryCompletedEvent;
 import io.trino.spi.eventlistener.QueryCreatedEvent;
@@ -26,6 +27,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 public class EventStreamEventListener
         implements EventListener
 {
+    private static final Logger log = Logger.get(EventStreamEventListener.class);
     private final KafkaProducer kafkaProducer;
     // TODO make this topic name configurable
     private static final String TOPIC_PRESTO_EVENT = "trino.event";
@@ -42,6 +44,7 @@ public class EventStreamEventListener
                 new ProducerRecord<>(TOPIC_PRESTO_EVENT,
                         queryCreatedEvent.getMetadata().getQueryId(),
                         queryCreatedEvent));
+        log.debug("Sent queryCreated event. query id %s", queryCreatedEvent.getMetadata().getQueryId());
     }
 
     @Override
@@ -51,6 +54,7 @@ public class EventStreamEventListener
                 new ProducerRecord<>(TOPIC_PRESTO_EVENT,
                         queryCompletedEvent.getMetadata().getQueryId(),
                         queryCompletedEvent));
+        log.debug("Sent queryCompleted event. query id %s", queryCompletedEvent.getMetadata().getQueryId());
     }
 
     @Override
@@ -60,5 +64,6 @@ public class EventStreamEventListener
                 new ProducerRecord<>(TOPIC_PRESTO_EVENT,
                         splitCompletedEvent.getQueryId(),
                         splitCompletedEvent));
+        log.debug("Sent splitCompleted event. query id %s", splitCompletedEvent.getQueryId());
     }
 }

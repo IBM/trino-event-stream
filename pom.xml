@@ -22,9 +22,21 @@
 	</licenses>
 
 	<properties>
-		<kafka.version>2.5.1</kafka.version>
+		<avro.version>1.9.2</avro.version>
+		<kafka.version>2.4.1</kafka.version>
+		<confluent.version>5.5.2</confluent.version>
 	</properties>
-	
+
+	<repositories>
+		<repository>
+			<id>confluent</id>
+			<url>https://packages.confluent.io/maven/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>io.airlift</groupId>
@@ -37,9 +49,43 @@
 		</dependency>
 
 		<dependency>
+			<groupId>io.confluent</groupId>
+			<artifactId>kafka-avro-serializer</artifactId>
+			<version>${confluent.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.kafka</groupId>
+					<artifactId>kafka-clients</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.glassfish.hk2.external</groupId>
+					<artifactId>jakarta.inject</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro</artifactId>
+			<version>${avro.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka-clients</artifactId>
 			<version>${kafka.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.airlift</groupId>
+			<artifactId>log-manager</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.confluent</groupId>
+			<artifactId>kafka-schema-registry-client</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- trino SPI -->
@@ -98,4 +144,64 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>1.11</source>
+					<target>1.11</target>
+				</configuration>
+			</plugin>
+
+
+			<!--for specific record-->
+			<plugin>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro-maven-plugin</artifactId>
+				<version>${avro.version}</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>schema</goal>
+							<goal>protocol</goal>
+							<goal>idl-protocol</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.basedir}/src/main/resources/avro</sourceDirectory>
+							<stringType>String</stringType>
+							<createSetters>false</createSetters>
+							<enableDecimalLogicalType>true</enableDecimalLogicalType>
+							<fieldVisibility>private</fieldVisibility>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!--force discovery of generated classes-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.basedir}/target/generated-sources/avro</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>

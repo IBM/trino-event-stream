@@ -15,6 +15,7 @@ package io.trino.plugin.eventstream;
 
 import com.google.common.collect.ImmutableMap;
 import io.airlift.log.Logger;
+import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import io.trino.spi.eventlistener.EventListener;
 import io.trino.spi.eventlistener.EventListenerFactory;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -53,17 +54,22 @@ public class EventStreamEventListenerFactory
         ImmutableMap.Builder builder = ImmutableMap.<String, Object>builder();
 
         Iterator<String> it = config.keySet().iterator();
-
         while (it.hasNext()) {
             String key = it.next();
-            // String kafkaConfigKey = key.replaceFirst(REGEX_CONFIG_PREFIX,
-            //         "");
-            log.debug("Loading event-listener config %s", key);
-            builder.put(key, config.get(key));
+            log.info(key);
+            log.info(config.get(key));
+            if (key.equals("value.serializer")) {
+                // Had to use serializer even though received from event-stream for maven to compile
+                builder.put(key, KafkaAvroSerializer.class.getName());
+            }
+            else {
+                builder.put(key, config.get(key));
+            }
+//            String kafkaConfigKey = key.replaceFirst(REGEX_CONFIG_PREFIX,
+//                     "");
         }
-
         // TODO design ways to config/code serializer
-
+        log.info("*** Builder map ***", builder.build());
         return builder.build();
     }
 

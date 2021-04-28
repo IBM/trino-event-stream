@@ -14,6 +14,7 @@
 package io.trino.plugin.eventstream;
 
 import io.airlift.log.Logger;
+import io.trino.QueryCreatedEventV1;
 import io.trino.spi.eventlistener.EventListener;
 import io.trino.spi.eventlistener.QueryCompletedEvent;
 import io.trino.spi.eventlistener.QueryCreatedEvent;
@@ -40,10 +41,25 @@ public class EventStreamEventListener
     @Override
     public void queryCreated(QueryCreatedEvent queryCreatedEvent)
     {
-        kafkaProducer.send(
-                new ProducerRecord<>(TOPIC_PRESTO_EVENT,
-                        queryCreatedEvent.getMetadata().getQueryId(),
-                        queryCreatedEvent.toString()));
+        QueryCreatedEventV1 created = QueryCreatedEventV1.newBuilder()
+                .setQuery(queryCreatedEvent.getMetadata().getQuery())
+                .setQueryID(queryCreatedEvent.getMetadata().getQueryId())
+                .setPrinciple(queryCreatedEvent.getContext().getPrincipal().toString())
+                .setUserAgent(queryCreatedEvent.getContext().getUserAgent().toString())
+                .setRemoteClientAddress(queryCreatedEvent.getContext().getRemoteClientAddress().toString())
+                .setClientInfo(queryCreatedEvent.getContext().getClientInfo().toString())
+                .build();
+
+        try {
+            log.info(created.toString());
+            kafkaProducer.send(
+                    new ProducerRecord<>(TOPIC_PRESTO_EVENT,
+                            queryCreatedEvent.toString(),
+                            created.toString()));
+        }
+        catch (Exception e) {
+            log.error(e);
+        }
         log.debug("Sent queryCreated event. query id %s", queryCreatedEvent.getMetadata().getQueryId());
     }
 

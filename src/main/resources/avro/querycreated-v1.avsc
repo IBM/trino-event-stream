@@ -1,6 +1,10 @@
 {
   "type": "record",
+<<<<<<< HEAD
   "namespace": "io.trino.plugin.eventstream",
+=======
+  "namespace": "io.trino",
+>>>>>>> 19d44f8... Avro formatter
   "name": "QueryCreatedEventV1",
   "fields": [
     { "name": "Query", "type": "string", "doc": "Query Statement" },
@@ -18,4 +22,8 @@
       "default": null
     }
   ]
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 19d44f8... Avro formatter

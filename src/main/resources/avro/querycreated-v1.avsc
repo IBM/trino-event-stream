@@ -1,0 +1,21 @@
+{
+  "type": "record",
+  "namespace": "io.trino.plugin.eventstream",
+  "name": "QueryCreatedEventV1",
+  "fields": [
+    { "name": "Query", "type": "string", "doc": "Query Statement" },
+    { "name": "QueryID", "type": "string", "doc": "Query ID" },
+    { "name": "Principle", "type": ["null" ,"string"], "doc": "Principle",
+      "default": null
+    },
+    { "name": "UserAgent", "type": ["null" ,"string"], "doc": "UserAgent",
+      "default": null
+    },
+    { "name": "RemoteClientAddress", "type": ["null" ,"string"], "doc": "RemoteClientAddress",
+      "default": null
+    },
+    { "name": "ClientInfo", "type": ["null" ,"string"], "doc": "ClientInfo",
+      "default": null
+    }
+  ]
+}

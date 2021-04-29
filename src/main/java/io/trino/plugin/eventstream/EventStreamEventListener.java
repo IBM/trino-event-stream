@@ -14,7 +14,6 @@
 package io.trino.plugin.eventstream;
 
 import io.airlift.log.Logger;
-import io.trino.QueryCreatedEventV1;
 import io.trino.spi.eventlistener.EventListener;
 import io.trino.spi.eventlistener.QueryCompletedEvent;
 import io.trino.spi.eventlistener.QueryCreatedEvent;

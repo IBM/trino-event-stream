@@ -50,11 +50,6 @@
 		</dependency>
 
 		<!-- trino SPI -->
-<!--		<dependency>-->
-<!--			<groupId>io.trino</groupId>-->
-<!--			<artifactId>trino-record-decoder</artifactId>-->
-<!--			<scope>provided</scope>-->
-<!--		</dependency>-->
 
 		<dependency>
 			<groupId>io.trino</groupId>

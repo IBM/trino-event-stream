@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "namespace": "io.trino",
+  "namespace": "io.trino.plugin.eventstream",
   "name": "QueryCreatedEventV1",
   "fields": [
     { "name": "Query", "type": "string", "doc": "Query Statement" },

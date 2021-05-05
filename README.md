@@ -22,6 +22,6 @@ key.serializer=org.apache.kafka.common.serialization.StringSerializer
 value.serializer=org.apache.kafka.common.serialization.StringSerializer
 ```
 
-Avro formatter is added to serialize messages generated from QueryCreatedEvent. Avro formatted messages would be read as String using the StringSerializer
+Avro formatter is added to serialize messages generated from QueryCreatedEvent, QueryCompletedEvent. Avro formatted messages would be read as String using the StringSerializer
 Then it will emit events to the Kafka topic `trino.event`.
 

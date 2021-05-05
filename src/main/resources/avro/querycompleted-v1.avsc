@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "namespace": "io.trino.plugin.eventstream",
+  "name": "QueryCompletedEventV1",
+  "fields": [
+    { "name": "Query", "type": "string", "doc": "Query Statement" },
+    { "name": "QueryID", "type": "string", "doc": "Query ID" },
+    { "name": "QueryStartTime", "type": "string", "doc": "Query Created Time"},
+    { "name": "QueryEndTime", "type": "string", "doc": "Query End Time"},
+    { "name": "OutputRows", "type": "long", "doc": "Output Rows from Query"}
+  ]
+}

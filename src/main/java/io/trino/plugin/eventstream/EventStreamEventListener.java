@@ -64,10 +64,22 @@ public class EventStreamEventListener
     @Override
     public void queryCompleted(QueryCompletedEvent queryCompletedEvent)
     {
-        kafkaProducer.send(
-                new ProducerRecord<>(TOPIC_PRESTO_EVENT,
-                        queryCompletedEvent.getMetadata().getQueryId(),
-                        queryCompletedEvent.toString()));
+        QueryCompletedEventV1 completed = QueryCompletedEventV1.newBuilder()
+                .setQuery(queryCompletedEvent.getMetadata().getQuery())
+                .setQueryID(queryCompletedEvent.getMetadata().getQueryId())
+                .setQueryStartTime(queryCompletedEvent.getCreateTime().toString())
+                .setQueryEndTime(queryCompletedEvent.getEndTime().toString())
+                .setOutputRows(queryCompletedEvent.getStatistics().getOutputRows())
+                .build();
+        try {
+            kafkaProducer.send(
+                    new ProducerRecord<>(TOPIC_PRESTO_EVENT,
+                            queryCompletedEvent.toString(),
+                            completed.toString()));
+        }
+        catch (Exception e) {
+            log.error(e);
+        }
         log.debug("Sent queryCompleted event. query id %s", queryCompletedEvent.getMetadata().getQueryId());
     }
 

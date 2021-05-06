@@ -41,6 +41,7 @@ public class EventStreamEventListener
     public void queryCreated(QueryCreatedEvent queryCreatedEvent)
     {
         QueryCreatedEventV1 created = QueryCreatedEventV1.newBuilder()
+                .setQueryType(queryCreatedEvent.toString().split("\\[")[0])
                 .setQuery(queryCreatedEvent.getMetadata().getQuery())
                 .setQueryID(queryCreatedEvent.getMetadata().getQueryId())
                 .setPrinciple(queryCreatedEvent.getContext().getPrincipal().toString())
@@ -65,6 +66,7 @@ public class EventStreamEventListener
     public void queryCompleted(QueryCompletedEvent queryCompletedEvent)
     {
         QueryCompletedEventV1 completed = QueryCompletedEventV1.newBuilder()
+                .setQueryType(queryCompletedEvent.toString().split("\\[")[0])
                 .setQuery(queryCompletedEvent.getMetadata().getQuery())
                 .setQueryID(queryCompletedEvent.getMetadata().getQueryId())
                 .setQueryStartTime(queryCompletedEvent.getCreateTime().toString())
@@ -86,10 +88,21 @@ public class EventStreamEventListener
     @Override
     public void splitCompleted(SplitCompletedEvent splitCompletedEvent)
     {
-        kafkaProducer.send(
-                new ProducerRecord<>(TOPIC_PRESTO_EVENT,
-                        splitCompletedEvent.getQueryId(),
-                        splitCompletedEvent.toString()));
+        SplitCompletedEventV1 split = SplitCompletedEventV1.newBuilder()
+                .setQueryType(splitCompletedEvent.toString().split("\\[")[0])
+                .setQueryID(splitCompletedEvent.getQueryId().toString())
+                .setQueryStartTime(splitCompletedEvent.getCreateTime().toString())
+                .setQueryEndTime(splitCompletedEvent.getEndTime().toString())
+                .build();
+        try {
+            kafkaProducer.send(
+                    new ProducerRecord<>(TOPIC_PRESTO_EVENT,
+                            splitCompletedEvent.toString(),
+                            split.toString()));
+        }
+        catch (Exception e) {
+            log.error(e);
+        }
         log.debug("Sent splitCompleted event. query id %s", splitCompletedEvent.getQueryId());
     }
 }

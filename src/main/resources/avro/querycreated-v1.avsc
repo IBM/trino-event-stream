@@ -3,6 +3,7 @@
   "namespace": "io.trino.plugin.eventstream",
   "name": "QueryCreatedEventV1",
   "fields": [
+    { "name": "QueryType", "type": "string", "doc": "Query Run Type" },
     { "name": "Query", "type": "string", "doc": "Query Statement" },
     { "name": "QueryID", "type": "string", "doc": "Query ID" },
     { "name": "Principle", "type": ["null" ,"string"], "doc": "Principle",

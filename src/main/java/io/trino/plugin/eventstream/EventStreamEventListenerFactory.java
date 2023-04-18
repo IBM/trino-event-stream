@@ -45,8 +45,9 @@ public class EventStreamEventListenerFactory
 
     /**
      * Transform event listener configuration into a Kafka configuration.
+     *
      * @param config event listener configuration object
-     * @return Map<String, Object>
+     * @return Map{@literal <}String, Object{@literal >}
      */
     private static Map<String, Object> toKafkaConfig(Map<String, String> config)
     {
